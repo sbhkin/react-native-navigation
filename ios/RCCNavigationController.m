@@ -228,13 +228,39 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   {
     NSString *title = button[@"title"];
     UIImage *iconImage = nil;
-    id icon = button[@"icon"];
-    if (icon) iconImage = [RCTConvert UIImage:icon];
-    
     UIBarButtonItem *barButtonItem;
+    UIButton *iconButton = nil;
+    id icon = button[@"icon"];
+    id webicon = button[@"webicon"];
+    if (webicon) {
+      iconButton = [[UIButton alloc]init];
+      [iconButton setBackgroundColor:[UIColor grayColor]];
+      __block UIImage *image;
+      // create a dispatch queue to download your image asynchronously
+      dispatch_queue_t downloadQueue = dispatch_queue_create("image downloader", NULL);
+      dispatch_async(downloadQueue, ^{
+        image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:webicon]]];
+        NSLog(@"image is downloadloded");
+        dispatch_sync(dispatch_get_main_queue(), ^{
+          [iconButton setImage:image forState:UIControlStateNormal];
+        });
+      });
+    }
+    if(icon) {
+      iconImage = [RCTConvert UIImage:icon];
+    }
+    
+    
     if (iconImage)
     {
       barButtonItem = [[UIBarButtonItem alloc] initWithImage:iconImage style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPress:)];
+    }else if (iconButton) {
+      iconButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+      iconButton.layer.cornerRadius = 18; // this value vary as per your desire
+      iconButton.clipsToBounds = YES;
+      [iconButton setFrame:CGRectMake(0, 0, 36, 36)];
+      [iconButton addTarget:self action:@selector(onButtonPress:) forControlEvents:UIControlEventTouchDown];
+      barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:iconButton];
     }
     else if (title)
     {
