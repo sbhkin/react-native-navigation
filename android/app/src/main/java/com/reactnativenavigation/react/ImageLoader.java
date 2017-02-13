@@ -10,16 +10,16 @@ public class ImageLoader {
     private static final String FILE_SCHEME = "file";
 
     public static Drawable loadImage(String iconSource) {
-        if (NavigationApplication.instance.isDebug()) {
-            return JsDevImageLoader.loadIcon(iconSource);
-        } else {
+        // if (NavigationApplication.instance.isDebug()) {
+        //     return JsDevImageLoader.loadIcon(iconSource);
+        // } else {
             Uri uri = Uri.parse(iconSource);
             if (isLocalFile(uri)) {
                 return loadFile(uri);
             } else {
                 return loadResource(iconSource);
             }
-        }
+        // }
     }
 
     private static boolean isLocalFile(Uri uri) {
