@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
@@ -39,7 +42,7 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
         return item;
     }
 
-    private void setIcon(MenuItem item) {
+    private void setIcon(final MenuItem item) {
         if (hasIcon()) {
             item.setIcon(buttonParams.icon);
         }
