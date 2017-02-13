@@ -1,5 +1,7 @@
 package com.reactnativenavigation.views;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Menu;
@@ -40,6 +42,14 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     private void setIcon(MenuItem item) {
         if (hasIcon()) {
             item.setIcon(buttonParams.icon);
+        }
+        if (hasWebicon()) {
+            Glide.with(this.parent.getContext()).load(buttonParams.webicon).asBitmap().into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    item.setIcon(new BitmapDrawable(parent.getResources(),resource));
+                }
+            });
         }
     }
 
@@ -85,6 +95,11 @@ class TitleBarButton implements MenuItem.OnMenuItemClickListener {
     private boolean hasIcon() {
         return buttonParams.icon != null;
     }
+
+    private boolean hasWebicon() {
+        return buttonParams.webicon != null;
+    }
+
 
     private boolean hasColor() {
         return buttonParams.color.hasColor();

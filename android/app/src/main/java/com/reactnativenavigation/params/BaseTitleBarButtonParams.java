@@ -20,6 +20,7 @@ public class BaseTitleBarButtonParams {
     public String eventId;
     public String label;
     public Drawable icon;
+    public String webicon;
     public StyleParams.Color color;
     public StyleParams.Color disabledColor;
     public ShowAsAction showAsAction;
