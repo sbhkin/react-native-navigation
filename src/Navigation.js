@@ -18,17 +18,17 @@ function registerComponent(screenID, generator, store = undefined, Provider = un
   if (store && Provider) {
     return _registerComponentRedux(screenID, generator, store, Provider);
   } else {
-    return _registerComponentNoRedux(screenID, generator);
+    return _registerComponentNoRedux(screenID, generator, store);
   }
 }
 
-function _registerComponentNoRedux(screenID, generator) {
+function _registerComponentNoRedux(screenID, generator, store = undefined) {
   const generatorWrapper = function() {
     const InternalComponent = generator();
     if (!InternalComponent) {
       console.error(`Navigation: ${screenID} registration result is 'undefined'`);
     }
-    
+
     return class extends Screen {
       static navigatorStyle = InternalComponent.navigatorStyle || {};
       static navigatorButtons = InternalComponent.navigatorButtons || {};
@@ -36,7 +36,7 @@ function _registerComponentNoRedux(screenID, generator) {
       constructor(props) {
         super(props);
         this.state = {
-          internalProps: {...props, ...PropRegistry.load(props.screenInstanceID)}
+          internalProps: {...props, ...PropRegistry.load(props.screenInstanceID), store : store}
         }
       }
 

@@ -15,7 +15,7 @@
   "readme": "https://github.com/wix/react-native-navigation#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wix/react-native-navigation.git"
+    "url": "https://github.com/sbhkin/react-native-navigation#imagebarbutton"
   },
   "main": "src/index.js",
   "scripts": {
